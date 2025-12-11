@@ -72,58 +72,74 @@ const Shop = () => {
     : PRODUCTS;
 
   return (
-    <div className="min-h-screen bg-background font-sans text-foreground flex flex-col">
+    <div className="min-h-screen bg-stone-50 font-sans text-[#420D09] flex flex-col">
       <Header />
-      <main className="flex-1 py-12 px-4 md:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row gap-8">
+      <main className="flex-1 py-12 px-4 md:px-8 max-w-7xl mx-auto w-full">
+        <div className="flex flex-col md:flex-row gap-12">
             {/* Sidebar Filters */}
-            <aside className="w-full md:w-64 space-y-8">
+            <aside className="w-full md:w-64 space-y-12 pt-2 hidden md:block">
                 <div>
-                    <h3 className="font-display text-xl mb-4">Studio</h3>
-                    <div className="space-y-2">
+                    <h3 className="font-display text-2xl mb-6 border-b border-[#420D09]/10 pb-2">Studios</h3>
+                    <div className="space-y-4">
                         {['Ruhé Studios', 'Sutrā Studios', 'Kritá Studios'].map(studio => (
-                            <label key={studio} className="flex items-center gap-2 cursor-pointer">
+                            <label key={studio} className="flex items-center gap-3 cursor-pointer group">
+                                <div className={`w-4 h-4 border border-[#420D09] flex items-center justify-center transition-colors ${selectedStudio === studio ? 'bg-[#420D09]' : 'bg-transparent'}`}>
+                                    {selectedStudio === studio && <span className="text-white text-[10px]">✓</span>}
+                                </div>
                                 <input 
                                     type="checkbox" 
                                     checked={selectedStudio === studio}
                                     onChange={() => setSelectedStudio(selectedStudio === studio ? null : studio)}
-                                    className="rounded border-gray-300"
+                                    className="hidden"
                                 />
-                                <span className="text-sm text-muted-foreground">{studio}</span>
+                                <span className="text-sm tracking-wide text-stone-600 group-hover:text-[#420D09] transition-colors">{studio}</span>
                             </label>
                         ))}
                     </div>
                 </div>
                 <div>
-                    <h3 className="font-display text-xl mb-4">Price Range</h3>
-                    <div className="space-y-2 text-sm text-muted-foreground">
-                        <label className="flex items-center gap-2"><input type="checkbox" /> Under ₹2000</label>
-                        <label className="flex items-center gap-2"><input type="checkbox" /> ₹2000 - ₹5000</label>
-                        <label className="flex items-center gap-2"><input type="checkbox" /> Above ₹5000</label>
+                    <h3 className="font-display text-2xl mb-6 border-b border-[#420D09]/10 pb-2">Price Range</h3>
+                    <div className="space-y-4 text-sm tracking-wide text-stone-600">
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                             <div className="w-4 h-4 border border-[#420D09] flex items-center justify-center"></div>
+                             <span className="group-hover:text-[#420D09] transition-colors">Under ₹2000</span>
+                        </label>
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                             <div className="w-4 h-4 border border-[#420D09] flex items-center justify-center"></div>
+                             <span className="group-hover:text-[#420D09] transition-colors">₹2000 - ₹5000</span>
+                        </label>
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                             <div className="w-4 h-4 border border-[#420D09] flex items-center justify-center"></div>
+                             <span className="group-hover:text-[#420D09] transition-colors">Above ₹5000</span>
+                        </label>
                     </div>
                 </div>
             </aside>
 
             {/* Product Grid */}
             <div className="flex-1">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-display">New Arrivals</h1>
-                    <span className="text-muted-foreground">{filteredProducts.length} items</span>
+                <div className="flex justify-between items-end mb-10">
+                    <div>
+                        <span className="text-xs font-medium tracking-[0.2em] text-[#B85C38] uppercase block mb-2">Collections</span>
+                        <h1 className="text-4xl md:text-5xl font-display">Shop All</h1>
+                    </div>
+                    <span className="text-sm tracking-widest uppercase border-b border-[#420D09] pb-1">{filteredProducts.length} Products</span>
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
                     {filteredProducts.map(product => (
                         <Link to={`/product/${product.id}`} key={product.id} className="group cursor-pointer block">
-                            <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-4 relative">
-                                <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div className="aspect-[3/4] bg-stone-200 overflow-hidden mb-5 relative">
+                                <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                                 <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                                    <Button className="w-full bg-white text-black hover:bg-gray-100">Quick View</Button>
+                                    <Button className="w-full bg-white text-[#420D09] hover:bg-[#420D09] hover:text-white uppercase tracking-widest text-xs h-12 rounded-none transition-colors">Quick View</Button>
                                 </div>
                             </div>
-                            <div className="space-y-1">
-                                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{product.studio}</p>
-                                <h3 className="font-medium text-lg">{product.name}</h3>
-                                <p className="text-foreground">₹{product.price.toLocaleString()}</p>
+                            <div className="space-y-2 text-center">
+                                <p className="text-[10px] font-medium text-stone-500 uppercase tracking-[0.2em]">{product.studio}</p>
+                                <h3 className="font-display text-xl group-hover:text-[#B85C38] transition-colors">{product.name}</h3>
+                                <p className="text-[#420D09] font-medium">₹{product.price.toLocaleString()}</p>
                             </div>
                         </Link>
                     ))}
