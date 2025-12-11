@@ -6,13 +6,13 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { CartSidebar } from '@/components/CartSidebar';
 import { useCart } from '@/contexts/CartContext';
-import { getProductById, getRelatedProducts } from '@/data/products';
+import { PRODUCTS } from './Shop';
 import { ProductCard } from '@/components/ProductCard';
 import { toast } from 'sonner';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const product = getProductById(Number(id));
+  const product = PRODUCTS.find(p => p.id === Number(id));
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
   
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -38,7 +38,8 @@ const ProductDetail = () => {
     );
   }
 
-  const relatedProducts = getRelatedProducts(product.id, product.category);
+  // Simple related products logic: same studio, excluding current product
+  const relatedProducts = PRODUCTS.filter(p => p.studio === product.studio && p.id !== product.id).slice(0, 4);
 
   const handleAddToCart = () => {
     if (product.sizes.length > 1 && !selectedSize) {

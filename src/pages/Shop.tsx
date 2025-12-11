@@ -3,17 +3,65 @@ import { Footer } from '@/components/Footer';
 import { CartSidebar } from '@/components/CartSidebar';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const PRODUCTS = [
-  { id: 1, name: "Zari-panelled Fusion Dress", studio: "Ruhé Studios", price: 4200, image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80" },
-  { id: 2, name: "Ikat Structured Jacket", studio: "Ruhé Studios", price: 3800, image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80" },
-  { id: 3, name: "Minimal Drape Skirt", studio: "Ruhé Studios", price: 2750, image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?w=800&q=80" },
-  { id: 4, name: "Handloom Banarasi Kurta Set", studio: "Sutrā Studios", price: 7500, image: "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=800&q=80" },
-  { id: 5, name: "Ajrakh Printed Co-Ord", studio: "Sutrā Studios", price: 4900, image: "https://images.unsplash.com/photo-1617114919297-3c8ddb01f599?w=800&q=80" },
-  { id: 6, name: "Chikankari Kurti", studio: "Sutrā Studios", price: 3200, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&q=80" },
-  { id: 7, name: "Handcrafted Silver Jhumka", studio: "Kritá Studios", price: 1850, image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80" },
-  { id: 8, name: "Gold-Plated Temple Pendant", studio: "Kritá Studios", price: 3600, image: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=800&q=80" },
-  { id: 9, name: "Minimal Everyday Studs", studio: "Kritá Studios", price: 950, image: "https://images.unsplash.com/photo-1630019852942-f89202989a51?w=800&q=80" },
+export const PRODUCTS = [
+  { 
+    id: 1, 
+    name: "Zari-panelled Fusion Dress", 
+    studio: "Ruhé Studios", 
+    price: 4200, 
+    image: "https://images.unsplash.com/photo-1589810635657-232948472d98?w=800&q=80",
+    images: ["https://images.unsplash.com/photo-1589810635657-232948472d98?w=800&q=80"],
+    category: "Dresses",
+    description: "A stunning fusion dress featuring intricate Zari paneling that blends traditional craftsmanship with modern silhouettes.",
+    colors: ["Red", "Maroon"],
+    sizes: ["S", "M", "L", "XL"],
+    material: "Silk Blend",
+    care: ["Dry clean only", "Store in muslin bag"]
+  },
+  { 
+    id: 2, 
+    name: "Ikat Structured Jacket", 
+    studio: "Ruhé Studios", 
+    price: 3800, 
+    image: "https://images.unsplash.com/photo-1622122201714-307c42200c53?w=800&q=80",
+    images: ["https://images.unsplash.com/photo-1622122201714-307c42200c53?w=800&q=80"],
+    category: "Jackets",
+    description: "Contemporary structured jacket featuring authentic Ikat weaving patterns.",
+    colors: ["Blue", "Grey"],
+    sizes: ["S", "M", "L"],
+    material: "Cotton Ikat",
+    care: ["Hand wash cold", "Iron on low heat"]
+  },
+  { 
+    id: 3, 
+    name: "Minimal Drape Skirt", 
+    studio: "Ruhé Studios", 
+    price: 2750, 
+    image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800&q=80",
+    images: ["https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800&q=80"],
+    category: "Bottoms",
+    description: "An elegant drape skirt designed for versatility and comfort.",
+    colors: ["Beige", "Black"],
+    sizes: ["XS", "S", "M", "L"],
+    material: "Crepe",
+    care: ["Machine wash gentle"]
+  },
+  { 
+    id: 10, 
+    name: "Embroidered Silk Tunic", 
+    studio: "Ruhé Studios", 
+    price: 3400, 
+    image: "https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=800&q=80",
+    images: ["https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?w=800&q=80"],
+    category: "Tops",
+    description: "Hand-embroidered silk tunic perfect for festive occasions.",
+    colors: ["Pink", "Peach"],
+    sizes: ["S", "M", "L", "XL"],
+    material: "Pure Silk",
+    care: ["Dry clean only"]
+  },
 ];
 
 const Shop = () => {
@@ -59,13 +107,13 @@ const Shop = () => {
             {/* Product Grid */}
             <div className="flex-1">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-display">Shop All Products</h1>
+                    <h1 className="text-2xl font-display">New Arrivals</h1>
                     <span className="text-muted-foreground">{filteredProducts.length} items</span>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProducts.map(product => (
-                        <div key={product.id} className="group cursor-pointer">
+                        <Link to={`/product/${product.id}`} key={product.id} className="group cursor-pointer block">
                             <div className="aspect-[3/4] bg-gray-100 rounded-lg overflow-hidden mb-4 relative">
                                 <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
@@ -77,7 +125,7 @@ const Shop = () => {
                                 <h3 className="font-medium text-lg">{product.name}</h3>
                                 <p className="text-foreground">₹{product.price.toLocaleString()}</p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>
