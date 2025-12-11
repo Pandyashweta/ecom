@@ -13,19 +13,19 @@ import { toast } from 'sonner';
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const product = getProductById(Number(id));
-  const { addToCart } = useCart();
+  const { addToCart, toggleWishlist, isInWishlist } = useCart();
   
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
+  const isLiked = product ? isInWishlist(product.id) : false;
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background flex flex-col">
         <Header />
-        <main className="container mx-auto px-4 py-20 text-center">
+        <main className="flex-1 container mx-auto px-4 py-20 text-center">
           <h1 className="font-display text-3xl mb-4">Product Not Found</h1>
           <p className="text-muted-foreground mb-8">The product you're looking for doesn't exist.</p>
           <Button variant="hero" asChild>
@@ -33,6 +33,7 @@ const ProductDetail = () => {
           </Button>
         </main>
         <Footer />
+        <CartSidebar />
       </div>
     );
   }
@@ -56,9 +57,9 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      <main>
+      <main className="flex-1">
         {/* Breadcrumb */}
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <Link 
@@ -104,6 +105,9 @@ const ProductDetail = () => {
               <div className="space-y-4">
                 <p className="text-sm font-semibold tracking-[0.2em] uppercase text-primary">
                   {product.category}
+                </p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                  Ruhé Studios Fusion for Every Body
                 </p>
                 <h1 className="font-display text-4xl lg:text-5xl font-medium text-foreground">
                   {product.name}
@@ -191,10 +195,13 @@ const ProductDetail = () => {
                   Add to Cart
                 </Button>
                 <button
-                  onClick={() => setIsLiked(!isLiked)}
+                  onClick={() => {
+                    // Ensure we pass a valid Product object with an image string
+                    toggleWishlist({ ...product, image: product.images[0] });
+                  }}
                   className="h-14 w-14 rounded-md border border-border flex items-center justify-center hover:bg-accent transition-colors"
                 >
-                  <Heart className={`h-5 w-5 ${isLiked ? 'fill-primary text-primary' : ''}`} />
+                  <Heart className={`h-5 w-5 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
                 </button>
               </div>
 
@@ -202,7 +209,7 @@ const ProductDetail = () => {
               <div className="grid grid-cols-3 gap-4 py-6 border-t border-b border-border">
                 <div className="text-center space-y-2">
                   <Truck className="h-6 w-6 mx-auto text-muted-foreground" />
-                  <p className="text-xs text-muted-foreground">Free Shipping</p>
+                  <p className="text-xs text-muted-foreground">Delivery: 5-7 Days</p>
                 </div>
                 <div className="text-center space-y-2">
                   <RefreshCw className="h-6 w-6 mx-auto text-muted-foreground" />
@@ -217,8 +224,16 @@ const ProductDetail = () => {
               {/* Details Accordion */}
               <div className="space-y-4">
                 <div className="border-b border-border pb-4">
+                  <h3 className="font-medium text-foreground mb-2">Craft Technique</h3>
+                  <p className="text-sm text-muted-foreground">Hand-woven by artisans in Varanasi using traditional pit looms.</p>
+                </div>
+                <div className="border-b border-border pb-4">
                   <h3 className="font-medium text-foreground mb-2">Material</h3>
                   <p className="text-sm text-muted-foreground">{product.material}</p>
+                </div>
+                <div className="border-b border-border pb-4">
+                  <h3 className="font-medium text-foreground mb-2">Sustainability Note</h3>
+                  <p className="text-sm text-muted-foreground">Made with 100% organic cotton and natural dyes. Zero-waste production process.</p>
                 </div>
                 <div className="border-b border-border pb-4">
                   <h3 className="font-medium text-foreground mb-2">Care Instructions</h3>

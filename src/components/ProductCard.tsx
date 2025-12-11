@@ -10,11 +10,12 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index }: ProductCardProps) {
-  const { addToCart } = useCart();
-  const [isLiked, setIsLiked] = useState(false);
+  const { addToCart, toggleWishlist, isInWishlist } = useCart();
   const [isHovered, setIsHovered] = useState(false);
+  const isLiked = isInWishlist(product.id);
 
   const handleAddToCart = () => {
+    e.preventDefault(); // Prevent navigation if inside a Link
     addToCart(product);
     toast.success(`${product.name} added to cart`);
   };
@@ -51,7 +52,10 @@ export function ProductCard({ product, index }: ProductCardProps) {
         {/* Wishlist Button */}
         <button
           className="absolute top-4 right-4 h-10 w-10 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center transition-all duration-300 hover:bg-background hover:shadow-soft"
-          onClick={() => setIsLiked(!isLiked)}
+          onClick={(e) => {
+            e.preventDefault();
+            toggleWishlist(product);
+          }}
         >
           <Heart
             className={`h-5 w-5 transition-all duration-300 ${isLiked ? 'fill-primary text-primary' : 'text-muted-foreground'}`}
